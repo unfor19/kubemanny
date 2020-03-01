@@ -54,7 +54,7 @@ Two common ways to use this image
     ```
 1. Build and Deploy your functions with [deploy_function.sh](./deploy_function.sh), this script does the following:
     - yarn build:dev
-    - Delete function if exists
+    - Kubeless - delete function if exists
     - Kubeless - deploy function
     - Kubeless - create http trigger
 
