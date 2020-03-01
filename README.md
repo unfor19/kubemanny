@@ -87,7 +87,7 @@ Switched to context "minikube".
 Enable nginx controller
 
 ```bash
-kubemanny$: addons enable ingress       # to expose Kubeless functions
+kubemanny$: minikube addons enable ingress       # to expose Kubeless functions
 ✅  ingress was successfully enabled
 ```
 
