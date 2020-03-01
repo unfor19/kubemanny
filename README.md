@@ -58,9 +58,6 @@ Two common ways to use this image
     - Kubeless - deploy function
     - Kubeless - create http trigger
 
-<details><summary><b>Quickstart (minikube)</b>
-</summary>
-
 ## Quickstart (minikube)
 
 Let's see if it really works, shall we?
@@ -167,5 +164,3 @@ Howyadoin'? meir
 ```bash
 kubemanny$: minikube delete
 ```
-
-</details>
