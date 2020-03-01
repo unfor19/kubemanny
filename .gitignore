@@ -1,0 +1,15 @@
+node_modules
+*.tar
+*.log
+*test*
+.*
+!.dockerignore
+!.eslint*
+!.prettierrc.js
+*/dist
+*.tfstate*
+auth
+terraform.tfstate
+!.vscode
+!.gitignore
+*.zip
