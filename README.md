@@ -8,6 +8,74 @@ pronounced: [ku-be-manny](https://translate.google.com/#view=home&op=translate&s
 
 [Docker](https://docs.docker.com/install/) - that's it! Everything is included in the [kubemanny](https://hub.docker.com/r/unfor19/kubemanny) docker image!
 
+<details><summary>Packages
+</summary>
+    
+<table>
+  <tr>
+    <th>Package</th>
+    <th>Version</th>
+  </tr>
+  <tr>
+    <td>bash</td>
+    <td>5.0.11</td>
+  </tr>
+  <tr>
+    <td>git</td>
+    <td>2.24.1</td>
+  </tr>
+  <tr>
+    <td>kubeless</td>
+    <td>1.0.6-dirty</td>
+  </tr>
+  <tr>
+    <td>NodeJS</td>
+    <td>12.16.1</td>
+  </tr>
+  <tr>
+    <td>yarn</td>
+    <td>1.22.0</td>
+  </tr>
+  <tr>
+    <td>Python</td>
+    <td>3.8.1</td>
+  </tr>
+  <tr>
+    <td>pip</td>
+    <td>20.0.2</td>
+  </tr>
+  <tr>
+    <td>kubectl</td>
+    <td>1.14.7-eks-1861c5</td>
+  </tr>
+  <tr>
+    <td>eksctl</td>
+    <td>GitTag: 0.13.0</td>
+  </tr>
+  <tr>
+    <td>helm</td>
+    <td>3.1.1</td>
+  </tr>
+  <tr>
+    <td>terraform</td>
+    <td>0.12.21</td>
+  </tr>
+  <tr>
+    <td>aws-cli</td>
+    <td>1.18.10</td>
+  </tr>
+  <tr>
+    <td>chamber</td>
+    <td>2.7.5</td>
+  </tr>
+  <tr>
+    <td>apache2-utils</td>
+    <td>2.4.27-r1</td>
+  </tr>
+</table>
+
+</details>
+
 ## Usage
 
 Two common ways to use this image
