@@ -118,12 +118,14 @@ function prepare_message(name) {
 
 function greet_normal(name) {
   var msg = prepare_message(name);
+  console.log(msg);
   return msg;
 }
 
 function greet_promise(name) {
   return new Promise(function (resolve, reject) {
     var msg = prepare_message(name);
+    console.log(msg);
     setTimeout(function () {
       resolve(msg);
     }, 3000);
@@ -149,14 +151,15 @@ function _greet_async() {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            msg = prepare_message(name);
+            console.log(msg);
+            _context.next = 4;
             return timeout(3000);
 
-          case 2:
-            msg = prepare_message(name);
+          case 4:
             return _context.abrupt("return", msg);
 
-          case 4:
+          case 5:
           case "end":
             return _context.stop();
         }
