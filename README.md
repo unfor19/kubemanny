@@ -4,7 +4,7 @@ Multiple packages for managing your AWS EKS cluster, and deploying Kubeless func
 
 pronounced: [ku-be-manny](https://translate.google.com/#view=home&op=translate&sl=en&tl=en&text=ku-be-manny)
 
-![Kubemanny-Example](https://s5.gifyu.com/images/kubemanny-example.gif)
+![Kubemanny-Example](./assets/kubemanny-example.gif)
 
 ## Requirements
 
