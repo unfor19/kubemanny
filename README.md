@@ -337,7 +337,7 @@ kubectl logs -f -l function=greet-promise
 
 ### Execute Kubeless function
 
-:crossed_fingers::skin-tone-2: The [scripts/curl_example.sh](./scripts/curl_example.sh) script gets the function's ingress, and then POSTs a basic auth request. Run with `--help` flag to see available options.
+:crossed_fingers: The [scripts/curl_example.sh](./scripts/curl_example.sh) script gets the function's ingress, and then POSTs a basic auth request. Run with `--help` flag to see available options.
 
 ```bash
 /code (master)$ bash ./scripts/curl_example.sh -fn greet-promise --name meir
@@ -364,7 +364,7 @@ Close the browser tab :sunglasses:
 Let's delete the minikube profile that we've created
 
 ```bash
-/code (develop)$ exit
+/code (master)$ exit
 exit
 kubemanny$: minikube delete -p kubemanny-cluster
 🔥  Deleting "kubemanny-cluster" in virtualbox ...
