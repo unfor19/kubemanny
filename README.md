@@ -241,7 +241,7 @@ This is our workspace, with all the applications and packages that we need.
     $ git clone https://github.com/unfor19/kubemanny.git
     ...
     Unpacking objects: 100% (57/57), done.
-    $ cd kubemanny/
+    $ cd kubemanny/     # <-- don't forget to change directory!
     ```
 1. :whale2: Run the container
 
@@ -273,13 +273,18 @@ In order for it to work, we are mounting the following directories:
 Kubeless allows us to deploy our functions to the Kubernetes cluster. In order to have this ability, we first need to deploy Kubeless to our cluster.
 
 1. :arrows_clockwise: Create a namespace for Kubeless
+
     ```bash
     /code (master)$ kubectl create ns kubeless
+
     namespace/kubeless created
     ```
+
 1. :arrows_clockwise: Create the Kubeless deployment
+
     ```bash
     /code (master)$ kubectl create -f https://github.com/kubeless/kubeless/releases/download/v1.0.6/kubeless-v1.0.6.yaml
+
     configmap/kubeless-config created
     ...
     customresourcedefinition.apiextensions.k8s.io/cronjobtriggers.kubeless.io created
@@ -292,17 +297,22 @@ Kubeless allows us to deploy our functions to the Kubernetes cluster. In order t
 It's always good practice to protect your functions, so let's use a simple basic-auth mechanism
 
 1. :u5272: Generate a secret with [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html)
+
     ```bash
     /code (master)$ htpasswd -cb auth my_user_name my_password
+
     Adding password for user my_user_name
     ```
+
 1. :arrows_clockwise: Create a basic-auth [secret](https://kubernetes.io/docs/concepts/configuration/secret/)
+
     ```bash
     /code (master)$ kubectl create secret generic basic-auth --from-file=auth
+
     secret/basic-auth created
     ```
 
-**Note**: Will use the above credentials when sending a basic-auth request, see [scripts/curl_example.sh](./scripts/curl_example.sh)
+**Note**: We'll use the above credentials when sending a basic-auth request, see [scripts/curl_example.sh](./scripts/curl_example.sh)
 
 <details><summary>Can I view this secret?
 </summary>
