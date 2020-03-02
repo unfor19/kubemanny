@@ -146,9 +146,7 @@ In this example, we'll deploy `greet_promise`, a function which replies after 3 
 
 No need for anything! We'll use [Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/#create-a-minikube-cluster), so all you need is a browser :yum:
 
-If you wish to run locally, then read this :point_down:
-
-<details><summary>Locally
+<details><summary>To run locally
 </summary>
 
 1. [Docker](https://docs.docker.com/install/)
