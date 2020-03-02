@@ -144,7 +144,7 @@ In this example, we'll deploy `greet_promise`, a function which replies after 3 
 
 ### Requirements
 
-No need for anything! We'll use [Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/#create-a-minikube-cluster), so all you need is a browser :yum:
+No need for anything! We'll use [Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/#create-a-minikube-cluster) terminal, so all you need is a browser :yum:
 
 <details><summary>To run locally
 </summary>
@@ -166,7 +166,7 @@ kubemanny$ minikube addons enable ingress -p kubemanny-cluster
 
 Consider this as if you're starting a [Cluster](https://kubernetes.io/docs/reference/glossary/?all=true#term-cluster) with one worker node [Node](https://kubernetes.io/docs/concepts/architecture/nodes/)
 
-1. :walking: Go to [Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/)
+1. :walking: Go to [Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/#create-a-minikube-cluster)
 1. :punch: Hit Launch Terminal
 1. :hourglass_flowing_sand: Wait for environment (~3 min)
 1. :computer: Recreate a new minikube machine with kubernetes v1.14 ([here's why](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html))
@@ -326,6 +326,7 @@ Cool huh? Read more about it here - [htpasswd](https://httpd.apache.org/docs/2.4
 
 ```bash
 /code (master)$ bash ./scripts/deploy_function.sh -fn greet_promise -hn localhost
+
 yarn install v1.22.0
 ...
 INFO[0000] Waiting for greet-promise to be ready ... Ready!
