@@ -168,7 +168,17 @@ Consider this as if you're starting a [Cluster](https://kubernetes.io/docs/refer
 
 1. :walking: Go to [Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/#create-a-minikube-cluster)
 1. :punch: Hit Launch Terminal
-1. :hourglass_flowing_sand: Wait for environment (~3 min)
+1. :heavy_exclamation_mark: Press CTRL+C to stop the default start.sh script
+    ```bash
+    $ start.sh
+    Starting Kubernetes...minikube version: v1.6.2
+    commit: 54f28ac5d3a815d1196cd5d57d707439ee4bb392
+    * minikube v1.6.2 on Ubuntu 18.04
+    * Selecting 'none' driver from user configuration (alternates: [])
+    * Running on localhost (CPUs=2, Memory=2461MB, Disk=47990MB) ...
+    * OS release is Ubuntu 18.04.3 LTS
+    ^C^C
+    ```
 1. :computer: Recreate a new minikube machine with kubernetes v1.14 ([here's why](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html))
     ```bash
     $ minikube delete && minikube start --kubernetes-version v1.14.0
