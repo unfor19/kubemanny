@@ -166,7 +166,7 @@ kubemanny$ minikube addons enable ingress -p kubemanny-cluster
 
 Consider this as if you're starting a [Cluster](https://kubernetes.io/docs/reference/glossary/?all=true#term-cluster) with one worker node [Node](https://kubernetes.io/docs/concepts/architecture/nodes/)
 
-1. :walking: Go to[Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/)
+1. :walking: Go to [Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/)
 1. :punch: Hit Launch Terminal
 1. :hourglass_flowing_sand: Wait for environment (~3 min)
 1. :computer: Recreate a new minikube machine with kubernetes v1.14 ([here's why](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html))
@@ -182,8 +182,8 @@ Consider this as if you're starting a [Cluster](https://kubernetes.io/docs/refer
     * Done! kubectl is now configured to use "minikube"
     ! /usr/bin/kubectl is version 1.17.0, and is incompatible with Kubernetes 1.14.0. You will need to update /usr/bin/kubectl or use 'minikube kubectl' to connect with this cluster
     ```
-    **Note**: We don't care about this message :point_up:, because the kubemanny image has kubectl-v1.14
-1. Install [nginx ingress controller](https://kubernetes.github.io/ingress-nginx/how-it-works/) to the cluster.
+    **Note**: We don't care about this message :point_up: because the kubemanny image has kubectl-v1.14
+1. :arrows_clockwise: Install [nginx ingress controller](https://kubernetes.github.io/ingress-nginx/how-it-works/) to the cluster
     ```bash
     $ minikube addons enable ingress
     * ingress was successfully enabled
@@ -233,7 +233,7 @@ This is our workspace, with all the applications and packages that we need.
     Unpacking objects: 100% (57/57), done.
     $ cd kubemanny/
     ```
-1. :runner: Run the container
+1. :whale2: Run the container
 
     ```bash
     $ bash ./scripts/docker_run_minikube.sh
