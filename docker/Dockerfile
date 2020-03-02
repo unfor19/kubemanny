@@ -22,8 +22,8 @@ FROM nikolaik/python-nodejs:python3.8-nodejs12-alpine AS app
 COPY --from=build /build/eksctl /build/kubectl /build/kubeless /build/helm /build/terraform /build/chamber /usr/local/bin/
 COPY --from=build /build/.git-prompt.sh /root/.git-prompt.sh
 
-RUN apk add --no-cache bash bash-completion git curl apache2-utils \
-    && pip3 install awscli --upgrade --no-cache-dir -q \
+RUN apk add --no-cache bash bash-completion git curl apache2-utils jq \
+    && pip3 install awscli yq --upgrade --no-cache-dir -q \
     && echo 'export PATH=$PATH:/usr/local/bin' >> /root/.bashrc \
     && echo 'source ~/.git-prompt.sh' >> /root/.bashrc \
     && echo 'export PS1="\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1)$ "' >> /root/.bashrc
