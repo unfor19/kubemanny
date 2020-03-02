@@ -166,7 +166,7 @@ kubemanny$ minikube addons enable ingress -p kubemanny-cluster
 
 Consider this as if you're starting a [Cluster](https://kubernetes.io/docs/reference/glossary/?all=true#term-cluster) with one worker node [Node](https://kubernetes.io/docs/concepts/architecture/nodes/)
 
-1. :walking: Go to[Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/
+1. :walking: Go to[Hello-Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/)
 1. :punch: Hit Launch Terminal
 1. :hourglass_flowing_sand: Wait for environment (~3 min)
 1. :computer: Recreate a new minikube machine with kubernetes v1.14 ([here's why](https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html))
