@@ -4,6 +4,8 @@ Multiple packages for managing your AWS EKS cluster, and deploying Kubeless func
 
 pronounced: [ku-be-manny](https://translate.google.com/#view=home&op=translate&sl=en&tl=en&text=ku-be-manny)
 
+![Kubemanny-Example](https://s5.gifyu.com/images/kubemanny-example.gif)
+
 ## Requirements
 
 [Docker](https://docs.docker.com/install/) - that's it! Everything is included in the [kubemanny](https://hub.docker.com/r/unfor19/kubemanny) docker image!

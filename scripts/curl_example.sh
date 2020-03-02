@@ -13,7 +13,7 @@ error (){
 
 usage(){
   cat << EOF
-Usage: bash ./scripts/curl_example.sh -n Willy
+Usage: bash ./scripts/curl_example.sh -fn greet-promise -n Willy
 Short  | Full                  | Default
 -n     | --name                | meir
 -u     | --username            | username
