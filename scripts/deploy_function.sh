@@ -20,7 +20,7 @@ error (){
 
 usage(){
   cat << EOF
-Usage: bash deploy_function.sh -fn greet_promise -hn dev.example.com
+Usage: bash ./scripts/deploy_function.sh -fn greet_promise -hn dev.example.com
 Short  | Full                                  | Default
 -fn    | --node_function_name                  | Required
 -hn    | --kubeless_trigger_hostname           | Required
@@ -101,11 +101,21 @@ spinner() {
 wait_for_function() {
     printf "$(print_info) Waiting for ${kubeless_function_name} to be ready ...  "
     while true; do
-        status=$(kubeless function ls "${kubeless_function_name}")
-        not_ready=$(echo $status | grep "NOT READY")
-        [[ -z $not_ready ]] && break || sleep 2
+        status=$(kubeless function ls | grep "${kubeless_function_name}.*0/[0-9]* NOT READY")
+        [[ -z $status ]] && break || sleep 2
     done & spinner
     printf "\\r$(print_info) Waiting for ${kubeless_function_name} to be ready ... Ready!\n"
+    sleep 1
+}
+
+wait_for_delete() {
+    printf "$(print_info) Waiting for ${kubeless_function_name} to be deleted ...  "
+    while true; do
+        status=$(kubeless function ls "${kubeless_function_name}")
+        not_deleted=$(echo $status | grep "not found")
+        [[ -z $not_deleted ]] && break || sleep 2
+    done & spinner
+    printf "\\r$(print_info) Waiting for ${kubeless_function_name} to be deleted ... Deleted!\n"
     sleep 1
 }
 
@@ -121,17 +131,20 @@ http_trigger (){
             && echo "--basic-auth-secret $kubeless_trigger_basic_auth_secret" || echo "")) 
 }
 
+# Install dependencies (including dev dependencies)
+yarn install
+
 # Build
 yarn build:dev || exit
 
 # Delete if exists
-kubeless_function_exists=$(kubeless function ls "${kubeless_function_name}" | grep "@kubernetes/client-node")
-[[ ! -z $kubeless_function_exists ]] && \
+kubeless_function_exists=$(kubeless function ls | grep "${kubeless_function_name}.*1/[0-9]*2 READY")
+[[ -z $kubeless_function_exists ]] && \
     echo "$(print_info) Deleting ${kubeless_function_name}" && \
     $(kubeless function delete "${kubeless_function_name}") && \
-    echo "$(print_info) Deleted ${kubeless_function_name}"
+    wait_for_delete
 
-# Deploy and create HTTP trigger
+# Deploy
 $(kubeless function deploy "${kubeless_function_name}" \
         --runtime "${kubeless_function_runtime}" \
         --from-file "${kubeless_function_zip_filename}" \

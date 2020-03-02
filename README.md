@@ -41,6 +41,8 @@ Two common ways to use this image
               bash
     ```
 
+**Tip**: Use [scripts/docker_run.sh](./scripts/docker_run.sh)
+
 ## Getting Started with Kubeless
 
 1. Install an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) on your cluster, see [Kubeless http triggers](https://kubeless.io/docs/http-triggers/)
@@ -52,7 +54,8 @@ Two common ways to use this image
     ```bash
     kubemanny$: yarn install
     ```
-1. Build and Deploy your functions with [deploy_function.sh](./deploy_function.sh), this script does the following:
+1. Build and Deploy your functions with [scripts/deploy_function.sh](./scripts/deploy_function.sh), this script does the following:
+    - yarn install
     - yarn build:dev
     - Delete function if exists
     - Kubeless - deploy function
@@ -62,52 +65,99 @@ Two common ways to use this image
 
 Let's see if it really works, shall we?
 
+<details><summary><b>Goal</b>
+</summary>
+
 I've created three functions: `greet_normal`, `greet_promise` and `greet_async`, see [src/controller.ts](./src/controller.ts)
 
 In this example, we'll deploy `greet_promise`, a function which replies after 3 seconds with a random greeting message.
+
+</details>
 
 ### Requirements
 
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/), that's it!
 
-### Start minikube
+### minikube
 
-Start minikube
+Consider this as if you're starting a [Node](https://kubernetes.io/docs/concepts/architecture/nodes/)
 
 ```bash
-kubemanny$: minikube start --kubernetes-version v1.14.0 --vm-driver=virtualbox
+kubemanny$: minikube start -p kubemanny-cluster --kubernetes-version v1.14.0 --vm-driver=virtualbox --memory 3072mb --disk-size 10240mb
 ...
-🏄  Done! kubectl is now configured to use "minikube"
-
-
-kubemanny$: kubectl config use-context minikube  # just to make sure we're using minikube
-Switched to context "minikube".
+⌛  Waiting for cluster to come online ...
+🏄  Done! kubectl is now configured to use "kubemanny-cluster"
 ```
 
-Enable nginx controller
+Install [nginx ingress controller](https://kubernetes.github.io/ingress-nginx/how-it-works/) to the cluster.
 
 ```bash
-kubemanny$: addons enable ingress       # to expose Kubeless functions
+kubemanny$: minikube -p kubemanny-cluster addons enable ingress
 ✅  ingress was successfully enabled
 ```
 
-### Start kubemanny container
+**Note**: Even though it took 1 second to nginx-ingress-controller, it takes a few minutes until it's actually ready
 
-[Bind mounts](https://docs.docker.com/storage/bind-mounts/)
+<details><summary>Why do I need an ingress controller?
+</summary>
+
+An [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) routes traffic from the outside world, to the releavnt [service](https://kubernetes.io/docs/concepts/services-networking/service/#service-resource) in the cluster.
+
+The routing rules are defined with [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/#what-is-ingress) resources.
+
+Each Kubeless function has an ingress rule, a service and a [deployment](<[deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#use-case)>).
+
+You guessed it right, the deployment is our actual Kubeless function ([containerized](https://www.docker.com/resources/what-container)).
+
+##### Process
+
+1. The ingress controller routes traffic to the function according to its hostname (or [path > Expose a function](https://kubeless.io/docs/http-triggers/))
+1. Kubeless function **ingress** rule contains the name of the service and its port
+1. Kubeless function **service** contains the name of the targeted deployment
+
+    </details>
+
+<details><summary>Is there a dashboard or something like that?
+</summary>
+
+Yes there is!
+
+```bash
+kubemanny$: minikube -p kubemanny-cluster dashboard
+```
+
+**Tip**: The nginx-ingress-controller is deployed in the `kube-system` [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+
+</details>
+
+### kubemanny container
+
+This is our workspace, with all the applications and packages that we need.
+
+```bash
+kubemanny$: bash ./scripts/docker_run_minikube.sh
+
+/code (master)$      # <-- we're in!
+```
+
+<details><summary>Why do I need bind mounts?
+</summary>
+
+The container uses [bind mounts](https://docs.docker.com/storage/bind-mounts/), so each time you add/create/modify/delete a file within the container, or locally on your machine, it is mirrored both on the Docker container and your local machine.
+
+In order for it to work, we are mounting the following directories:
 
 1. `$HOME/.minikube` (readonly)
 1. `$HOME/.kube/config` (readonly)
 1. Current working directory (readwrite)
 
-```bash
-kubemanny$: bash ./docker_run_minikube.sh
+**Tip**: Take a look at the [scripts/docker_run_minikube.sh](./scripts/docker_run_minikube.sh) file
 
-/code (master)$
-```
+</details>
 
 ### Deploy Kubeless
 
-Create the Kubeless namespace and create its deployment - [Source](https://kubeless.io/docs/quick-start/)
+Create a Kubeless namespace and create its deployment - [Source](https://kubeless.io/docs/quick-start/)
 
 ```bash
 /code (master)$ kubectl create ns kubeless && kubectl create -f https://github.com/kubeless/kubeless/releases/download/v1.0.6/kubeless-v1.0.6.yaml
@@ -117,8 +167,9 @@ Create the Kubeless namespace and create its deployment - [Source](https://kubel
 
 It's always good practice to protect your functions, so let's use a simple basic-auth mechanism
 
-1. Create a basic-auth secret
-1. Copy the secret
+1. Generate a secret with [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html)
+1. Create a basic-auth [secret](https://kubernetes.io/docs/concepts/configuration/secret/)
+1. Use the given credentials when sending a basic-auth request, see [scripts/curl_example.sh](./scripts/curl_example.sh)
 
 ```bash
 /code (master)$ htpasswd -cb auth my_user_name my_password
@@ -126,18 +177,38 @@ Adding password for user my_user_name
 
 /code (master)$ kubectl create secret generic basic-auth --from-file=auth
 secret/basic-auth created
-
-/code (master)$ echo $(kubectl get secret basic-auth -o=jsonpath='{.data.auth}')
-
-bXlfdXNlcl9uYW1lOiRhcHIxJG9sYThnenh3JDJrc0kyZEc0RS9PWTB6L2ZzTVFENTAK   # <-- basic-auth secret
 ```
 
+<details><summary>Can I view this secret?
+</summary>
+
+Yes you can! But you'll still need the username and password, when you request to invoke a Kubeless function.
+
+```bash
+/code (master)$ echo $(kubectl get secret basic-auth -o=jsonpath='{.data.auth}')
+bXlfdXNlcl9uYW1lOiRhcHIxJG5BcjBUbEgvJE1USTBKUlhoaEhlN1R1dm4zSWlYRzEK   # <-- basic-auth secret
+```
+
+Let's decode it with base64, and let's view the auth file.
+
+```bash
+/code (master)$ echo $(kubectl get secret basic-auth -o=jsonpath='{.data.auth}' | base64 -d)
+my_user_name:$apr1$ukcReKFZ$aE./88O0KMWZ2IsqL/xyk.   # <-- decoded
+
+/code (master)$ cat auth
+my_user_name:$apr1$ukcReKFZ$aE./88O0KMWZ2IsqL/xyk.   # <-- generated with htpasswd
+```
+
+Cool huh? Read more about it here - [htpasswd]
+
 **Note**: The file `auth` is ignored in `.gitignore`
+
+</details>
 
 ### Deploy Kubeless function
 
 ```bash
-/code (master)$ bash deploy_function.sh -fn greet_promise -hn localhost
+/code (master)$ bash ./scripts/deploy_function.sh -fn greet_promise -hn localhost
 ...
 INFO[0000] Waiting for greet-promise to be ready ... Ready!
 INFO[0000] View logs:
@@ -146,21 +217,32 @@ kubectl logs -f -l function=greet-promise
 
 ### Execute Kubeless function
 
-The [curl_example.sh](./curl_example.sh) script gets the function's ingress, and then POSTs a basic auth request. Explore this file and play with it.
+The [scripts/curl_example.sh](./scripts/curl_example.sh) script gets the function's ingress, and then POSTs a basic auth request. Explore this file and play with it.
 
 ```bash
-/code (master)$ bash curl_example.sh
-Alrighty then! meir
-/code (master)$ bash curl_example.sh
-Howdy meir
-/code (master)$ bash curl_example.sh
-Howyadoin'? meir
+/code (master)$ bash ./scripts/curl_example.sh -fn greet-promise --name "meir"
+INFO[0000] Function Name:     greet-promise
+INFO[0000] Hostname:          greet-promise.192.168.99.105.nip.io
+INFO[0000] Username:          my_user_name
+INFO[0000] Password:          my_password
+INFO[0000] Invoking a request ...
+INFO[0000] Response:      Guten Targ meir
+INFO[0000] Response time: 3.024527ms
 ```
+
+**Tip**: Deploy the `greet-normal` function, and curl it. Watch for the response time!
 
 ### Cleanup
 
 **IMPORTANT**: make sure you're not in the container, otherwise it won't work
 
+Let's delete the minikube profile that we've created
+
 ```bash
-kubemanny$: minikube delete
+/code (develop)$ exit
+exit
+kubemanny$: minikube delete -p kubemanny-cluster
+🔥  Deleting "kubemanny-cluster" in virtualbox ...
+💔  The "kubemanny-cluster" cluster has been deleted.
+🔥  Successfully deleted profile "kubemanny-cluster"
 ```
