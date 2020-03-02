@@ -1,14 +1,14 @@
 const greeting = require('random-greetings');
 
 function prepare_message(name: string) {
-    const msg = `${greeting.greet()} ${name}`;
+    const msg = `${greeting.greet()} ${name} - FOO = ${process.env.FOO}`;
     return msg;
 }
 
 function greet_normal(name: string) {
     const msg = prepare_message(name);
     console.log(msg);
-    return msg;
+    return `${msg}`;
 }
 
 function greet_promise(name: string) {
