@@ -9,7 +9,6 @@
         "@babel/plugin-transform-runtime": "^7.8.3",
         "@babel/preset-env": "^7.8.3",
         "@babel/preset-typescript": "^7.8.3",
-        "@types/lodash": "^4.14.149",
         "@types/node": "^13.5.0",
         "@typescript-eslint/eslint-plugin": "^2.18.0",
         "@typescript-eslint/parser": "^2.18.0",
@@ -17,12 +16,8 @@
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.9.0",
         "eslint-plugin-prettier": "^3.1.2",
-        "express": "^4.17.1",
         "prettier": "^1.19.1",
-        "serve-favicon": "^2.5.0",
         "ts-node": "^8.5.2",
-        "typedoc": "^0.16.9",
-        "typedoc-plugin-markdown": "^2.2.16",
         "typescript": "^3.7.4",
         "webpack": "^4.41.5",
         "webpack-cli": "^3.3.10",
@@ -37,10 +32,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.8.4",
-        "@kubernetes/client-node": "^0.11.1",
-        "lodash": "^4.17.15",
-        "random-greetings": "^1.0.5",
-        "requestretry": "^4.1.0"
+        "random-greetings": "^1.0.5"
     },
     "scripts": {
         "build:dev": "webpack --config webpack.config.js --mode development",
